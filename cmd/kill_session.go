@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/scrapli/scrapligo/driver/opoptions"
-	"github.com/scrapli/scrapligo/driver/options"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -20,11 +19,7 @@ var (
 
 			d, err := netconf.NewDriver(
 				driverOpts.Host,
-				options.WithAuthNoStrictKey(),
-				options.WithAuthUsername(driverOpts.Username),
-				options.WithAuthPassword(driverOpts.Password),
-				options.WithPort(driverOpts.Port),
-				options.WithLogger(logger),
+				DriverCommonOptions()...,
 			)
 			if err != nil {
 				return err

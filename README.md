@@ -47,7 +47,7 @@ ncli --host clab-single-leaf1 --username admin --password admin@123 hello
 ```
 
 ```bash
-ncli --host clab-single-leaf1 --username admin --password admin@123 get --filter /netconf-state/capabilities
+ncli --host clab-single-leaf1 --username admin --password admin@123 get --path /netconf-state/capabilities
 ```
 
 ```bash
