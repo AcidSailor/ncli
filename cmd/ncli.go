@@ -2,15 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/scrapli/scrapligo/driver/options"
 	"github.com/scrapli/scrapligo/logging"
+	"github.com/scrapli/scrapligo/util"
 	"github.com/spf13/cobra"
 	"log"
-)
-
-var (
-	version = "dev"
-	commit  = "none"
-	date    = "unknown"
 )
 
 type DriverOpts struct {
@@ -20,6 +16,17 @@ type DriverOpts struct {
 	Password string
 }
 
+func DriverCommonOptions() []util.Option {
+	return []util.Option{
+		options.WithAuthNoStrictKey(),
+		options.WithTransportType("standard"),
+		options.WithAuthUsername(driverOpts.Username),
+		options.WithAuthPassword(driverOpts.Password),
+		options.WithPort(driverOpts.Port),
+		options.WithLogger(logger),
+	}
+}
+
 var (
 	driverOpts       = &DriverOpts{}
 	withLock         string
@@ -27,9 +34,8 @@ var (
 	logger           *logging.Instance
 
 	ncli = &cobra.Command{
-		Use:     "ncli",
-		Short:   "Simple netconf command line client",
-		Version: fmt.Sprintf("%s commit %s date %s ", version, commit, date),
+		Use:   "ncli",
+		Short: "Simple netconf command line client",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			var err error
 			if withLoggingLevel != "" {
@@ -42,6 +48,10 @@ var (
 		},
 	}
 )
+
+func SetVersionInfo(version, commit, date string) {
+	ncli.Version = fmt.Sprintf("%s commit %s date %s ", version, commit, date)
+}
 
 func Execute() error {
 	return ncli.Execute()
