@@ -10,15 +10,17 @@ import (
 )
 
 type DriverOpts struct {
-	Host     string
-	Port     int
-	Username string
-	Password string
+	Host      string
+	Port      int
+	Username  string
+	Password  string
+	NcVersion string
 }
 
 func DriverCommonOptions() []util.Option {
 	return []util.Option{
 		options.WithAuthNoStrictKey(),
+		options.WithNetconfPreferredVersion(driverOpts.NcVersion),
 		options.WithTransportType("standard"),
 		options.WithAuthUsername(driverOpts.Username),
 		options.WithAuthPassword(driverOpts.Password),
@@ -67,6 +69,7 @@ func init() {
 	ncli.MarkFlagsRequiredTogether("username", "password")
 
 	ncli.PersistentFlags().StringVar(&withLock, "lock", "", "wrap calls with lock/unlock - if applicable")
+	ncli.PersistentFlags().StringVar(&driverOpts.NcVersion, "with-nc-version", "1.0", "netconf version (1.0 or 1.1)")
 	ncli.PersistentFlags().StringVar(&withLoggingLevel, "logging-level", "", "set logging level - info,debug,critical")
 
 	commands := []*cobra.Command{
