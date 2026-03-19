@@ -1,3 +1,4 @@
 FROM scratch
-COPY ncli /
+ARG TARGETPLATFORM
+COPY ${TARGETPLATFORM}/ncli /ncli
 ENTRYPOINT ["/ncli"]

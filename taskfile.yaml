@@ -1,6 +1,10 @@
-version: '3'
+version: "3"
 
 tasks:
+  lint:
+    cmds:
+      - golangci-lint fmt
+      - golangci-lint run
   build:
     cmds:
       - goreleaser release --snapshot --clean

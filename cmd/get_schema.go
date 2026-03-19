@@ -6,7 +6,6 @@ import (
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/scrapli/scrapligo/driver/opoptions"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (
@@ -33,7 +32,7 @@ var (
 			if err != nil {
 				return err
 			}
-			defer d.Close()
+			defer func() { _ = d.Close() }()
 
 			var st string
 
@@ -58,7 +57,7 @@ var (
 				if _, err = d.Lock(withLock); err != nil {
 					return err
 				}
-				defer d.Unlock(withLock)
+				defer func() { _, _ = d.Unlock(withLock) }()
 			}
 
 			r, err := d.RPC(
@@ -69,8 +68,7 @@ var (
 			}
 
 			if r.Failed != nil {
-				fmt.Fprintln(os.Stderr, r.Result)
-				os.Exit(1)
+				return r.Failed
 			}
 			fmt.Println(r.Result)
 
@@ -83,5 +81,5 @@ func init() {
 	getSchemaCmd.Flags().StringVar(&getSchemaIdentifier, "identifier", "", "schema identifier")
 	getSchemaCmd.Flags().StringVar(&getSchemaVersion, "version", "", "schema version")
 	getSchemaCmd.Flags().StringVar(&getSchemaFormat, "format", "yang", "schema format")
-	getSchemaCmd.MarkFlagRequired("identifier")
+	_ = getSchemaCmd.MarkFlagRequired("identifier")
 }

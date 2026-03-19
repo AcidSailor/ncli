@@ -31,7 +31,7 @@ var (
 			if err != nil {
 				return err
 			}
-			defer d.Close()
+			defer func() { _ = d.Close() }()
 
 			var f string
 
@@ -51,7 +51,7 @@ var (
 				if _, err = d.Lock(withLock); err != nil {
 					return err
 				}
-				defer d.Unlock(withLock)
+				defer func() { _, _ = d.Unlock(withLock) }()
 			}
 
 			r, err := d.RPC(
@@ -62,8 +62,7 @@ var (
 			}
 
 			if r.Failed != nil {
-				fmt.Fprintln(os.Stderr, r.Result)
-				os.Exit(1)
+				return r.Failed
 			}
 			fmt.Println(r.Result)
 

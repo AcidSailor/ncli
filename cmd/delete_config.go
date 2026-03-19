@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (
@@ -28,13 +27,13 @@ var (
 			if err != nil {
 				return err
 			}
-			defer d.Close()
+			defer func() { _ = d.Close() }()
 
 			if withLock != "" {
 				if _, err = d.Lock(withLock); err != nil {
 					return err
 				}
-				defer d.Unlock(withLock)
+				defer func() { _, _ = d.Unlock(withLock) }()
 			}
 
 			r, err := d.DeleteConfig(deleteConfigTarget)
@@ -43,8 +42,7 @@ var (
 			}
 
 			if r.Failed != nil {
-				fmt.Fprintln(os.Stderr, r.Result)
-				os.Exit(1)
+				return r.Failed
 			}
 			fmt.Println(r.Result)
 
@@ -55,5 +53,5 @@ var (
 
 func init() {
 	deleteConfigCmd.Flags().StringVar(&deleteConfigTarget, "target", "", "config target")
-	deleteConfigCmd.MarkFlagRequired("target")
+	_ = deleteConfigCmd.MarkFlagRequired("target")
 }

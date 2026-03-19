@@ -34,7 +34,7 @@ var (
 			if err != nil {
 				return err
 			}
-			defer d.Close()
+			defer func() { _ = d.Close() }()
 
 			var f string
 
@@ -57,7 +57,7 @@ var (
 				if _, err = d.Lock(withLock); err != nil {
 					return err
 				}
-				defer d.Unlock(withLock)
+				defer func() { _, _ = d.Unlock(withLock) }()
 			}
 
 			r, err := d.GetConfig(
@@ -70,8 +70,7 @@ var (
 			}
 
 			if r.Failed != nil {
-				fmt.Fprintln(os.Stderr, r.Result)
-				os.Exit(1)
+				return r.Failed
 			}
 			fmt.Println(r.Result)
 
@@ -86,7 +85,7 @@ func init() {
 	getConfigCmd.Flags().StringVar(&getConfigFilterValue, "value", "", "filter value")
 	getConfigCmd.Flags().StringVar(&getConfigFilterFile, "filter-file", "", "filter file")
 	getConfigCmd.Flags().StringVar(&getConfigSource, "source", "", "config source")
-	getConfigCmd.MarkFlagRequired("source")
+	_ = getConfigCmd.MarkFlagRequired("source")
 	getConfigCmd.MarkFlagsOneRequired("path", "filter-file")
 	getConfigCmd.MarkFlagsMutuallyExclusive("path", "filter-file")
 }
