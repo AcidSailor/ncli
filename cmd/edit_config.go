@@ -35,7 +35,7 @@ var (
 			if err != nil {
 				return err
 			}
-			defer d.Close()
+			defer func() { _ = d.Close() }()
 
 			var cfg string
 
@@ -58,7 +58,7 @@ var (
 				if _, err = d.Lock(withLock); err != nil {
 					return err
 				}
-				defer d.Unlock(withLock)
+				defer func() { _, _ = d.Unlock(withLock) }()
 			}
 
 			r, err := d.EditConfig(
@@ -68,12 +68,20 @@ var (
 			if err != nil {
 				return err
 			}
+			if r.Failed != nil {
+				return r.Failed
+			}
+			fmt.Println(r.Result)
 
 			if editConfigValidate {
 				r, err = d.Validate(editConfigTarget)
 				if err != nil {
 					return err
 				}
+				if r.Failed != nil {
+					return r.Failed
+				}
+				fmt.Println(r.Result)
 			}
 
 			if editConfigDiscard {
@@ -81,6 +89,10 @@ var (
 				if err != nil {
 					return err
 				}
+				if r.Failed != nil {
+					return r.Failed
+				}
+				fmt.Println(r.Result)
 			}
 
 			if editConfigCommit {
@@ -88,13 +100,11 @@ var (
 				if err != nil {
 					return err
 				}
+				if r.Failed != nil {
+					return r.Failed
+				}
+				fmt.Println(r.Result)
 			}
-
-			if r.Failed != nil {
-				fmt.Fprintln(os.Stderr, r.Result)
-				os.Exit(1)
-			}
-			fmt.Println(r.Result)
 
 			return nil
 		},
@@ -112,7 +122,7 @@ func init() {
 		"execute commit operation after edit-config")
 	editConfigCmd.Flags().BoolVar(&editConfigDiscard, "discard", false,
 		"execute discard operation after edit-config")
-	editConfigCmd.MarkFlagRequired("target")
+	_ = editConfigCmd.MarkFlagRequired("target")
 	editConfigCmd.MarkFlagsOneRequired("path", "config-file")
 	editConfigCmd.MarkFlagsRequiredTogether("path", "value")
 	editConfigCmd.MarkFlagsMutuallyExclusive("path", "config-file")

@@ -36,8 +36,9 @@ var (
 	logger           *logging.Instance
 
 	ncli = &cobra.Command{
-		Use:   "ncli",
-		Short: "Simple netconf command line client",
+		Use:           "ncli",
+		Short:         "Simple netconf command line client",
+		SilenceErrors: true,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			var err error
 			if withLoggingLevel != "" {
@@ -62,7 +63,7 @@ func Execute() error {
 func init() {
 	ncli.PersistentFlags().StringVar(&driverOpts.Host, "host", "", "hostname or address of the device")
 	ncli.PersistentFlags().IntVar(&driverOpts.Port, "port", 830, "port of the device")
-	ncli.MarkFlagRequired("host")
+	_ = ncli.MarkFlagRequired("host")
 
 	ncli.PersistentFlags().StringVar(&driverOpts.Username, "username", "", "username for authentication")
 	ncli.PersistentFlags().StringVar(&driverOpts.Password, "password", "", "password for authentication")

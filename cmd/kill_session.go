@@ -5,7 +5,6 @@ import (
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/scrapli/scrapligo/driver/opoptions"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (
@@ -29,13 +28,13 @@ var (
 			if err != nil {
 				return err
 			}
-			defer d.Close()
+			defer func() { _ = d.Close() }()
 
 			if withLock != "" {
 				if _, err = d.Lock(withLock); err != nil {
 					return err
 				}
-				defer d.Unlock(withLock)
+				defer func() { _, _ = d.Unlock(withLock) }()
 			}
 
 			r, err := d.RPC(
@@ -49,8 +48,7 @@ var (
 			}
 
 			if r.Failed != nil {
-				fmt.Fprintln(os.Stderr, r.Result)
-				os.Exit(1)
+				return r.Failed
 			}
 			fmt.Println(r.Result)
 
@@ -61,5 +59,5 @@ var (
 
 func init() {
 	killSessionCmd.Flags().IntVar(&sessionId, "session-id", 0, "session id")
-	killSessionCmd.MarkFlagRequired("session-id")
+	_ = killSessionCmd.MarkFlagRequired("session-id")
 }

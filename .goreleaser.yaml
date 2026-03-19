@@ -13,27 +13,32 @@ builds:
       - linux
       - windows
       - darwin
+    goarch:
+      - amd64
+      - arm64
 
-dockers:
-  - image_templates:
-      - "ghcr.io/acidsailor/ncli:latest"
-      - "ghcr.io/acidsailor/ncli:{{ .Tag }}"
+dockers_v2:
+  - images:
+      - "ghcr.io/acidsailor/ncli"
+    tags:
+      - "{{ .Tag }}"
+      - latest
     dockerfile: Dockerfile.goreleaser
-    goos: linux
-    goarch: amd64
+    platforms:
+      - linux/amd64
+      - linux/arm64
 
 archives:
   - formats:
       - tar.gz
-    # this name template makes the OS and Arch compatible with the results of `uname`.
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "arm64" }}arm64
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
-    # use zip for windows archives
     format_overrides:
       - goos: windows
         formats:
@@ -45,3 +50,4 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+      - "^chore:"

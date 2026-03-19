@@ -29,7 +29,7 @@ var helloCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		defer d.Channel.Close()
+		defer func() { _ = d.Channel.Close() }()
 
 		r, err := d.Channel.ReadUntilPrompt(ctx)
 		if err != nil {
