@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/acidsailor/ncli/cmd"
 	"os"
+
+	"github.com/acidsailor/ncli/cmd"
 )
 
 var (
-	version = "dev"
+	version = "unknown"
 	commit  = "none"
 	date    = "unknown"
 )

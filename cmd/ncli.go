@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/scrapli/scrapligo/driver/options"
 	"github.com/scrapli/scrapligo/logging"
 	"github.com/scrapli/scrapligo/util"
 	"github.com/spf13/cobra"
-	"log"
 )
 
 type DriverOpts struct {
@@ -61,17 +62,24 @@ func Execute() error {
 }
 
 func init() {
-	ncli.PersistentFlags().StringVar(&driverOpts.Host, "host", "", "hostname or address of the device")
-	ncli.PersistentFlags().IntVar(&driverOpts.Port, "port", 830, "port of the device")
+	ncli.PersistentFlags().
+		StringVar(&driverOpts.Host, "host", "", "hostname or address of the device")
+	ncli.PersistentFlags().
+		IntVar(&driverOpts.Port, "port", 830, "port of the device")
 	_ = ncli.MarkFlagRequired("host")
 
-	ncli.PersistentFlags().StringVar(&driverOpts.Username, "username", "", "username for authentication")
-	ncli.PersistentFlags().StringVar(&driverOpts.Password, "password", "", "password for authentication")
+	ncli.PersistentFlags().
+		StringVar(&driverOpts.Username, "username", "", "username for authentication")
+	ncli.PersistentFlags().
+		StringVar(&driverOpts.Password, "password", "", "password for authentication")
 	ncli.MarkFlagsRequiredTogether("username", "password")
 
-	ncli.PersistentFlags().StringVar(&withLock, "lock", "", "wrap calls with lock/unlock - if applicable")
-	ncli.PersistentFlags().StringVar(&driverOpts.NcVersion, "with-nc-version", "1.0", "netconf version (1.0 or 1.1)")
-	ncli.PersistentFlags().StringVar(&withLoggingLevel, "logging-level", "", "set logging level - info,debug,critical")
+	ncli.PersistentFlags().
+		StringVar(&withLock, "lock", "", "wrap calls with lock/unlock - if applicable")
+	ncli.PersistentFlags().
+		StringVar(&driverOpts.NcVersion, "with-nc-version", "1.0", "netconf version (1.0 or 1.1)")
+	ncli.PersistentFlags().
+		StringVar(&withLoggingLevel, "logging-level", "", "set logging level - info,debug,critical")
 
 	commands := []*cobra.Command{
 		helloCmd,

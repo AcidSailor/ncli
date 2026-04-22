@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/spf13/cobra"
 )
@@ -51,5 +52,6 @@ var (
 )
 
 func init() {
-	validateCmd.Flags().StringVar(&validateSource, "source", "candidate", "source to validate")
+	validateCmd.Flags().
+		StringVar(&validateSource, "source", "candidate", "source to validate")
 }

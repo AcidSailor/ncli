@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/acidsailor/ncli/internal/utils"
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/scrapli/scrapligo/driver/opoptions"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (
@@ -40,7 +41,10 @@ var (
 
 			switch getConfigFilterType {
 			case "subtree":
-				f = utils.FlatPathToSubtreeWithValue(getConfigFilterPath, getConfigFilterValue)
+				f = utils.FlatPathToSubtreeWithValue(
+					getConfigFilterPath,
+					getConfigFilterValue,
+				)
 			case "xpath":
 				f = getConfigFilterPath
 			}
@@ -80,11 +84,16 @@ var (
 )
 
 func init() {
-	getConfigCmd.Flags().StringVar(&getConfigFilterType, "filter-type", "subtree", "filter type - subtree or xpath")
-	getConfigCmd.Flags().StringVar(&getConfigFilterPath, "path", "", "filter path")
-	getConfigCmd.Flags().StringVar(&getConfigFilterValue, "value", "", "filter value")
-	getConfigCmd.Flags().StringVar(&getConfigFilterFile, "filter-file", "", "filter file")
-	getConfigCmd.Flags().StringVar(&getConfigSource, "source", "", "config source")
+	getConfigCmd.Flags().
+		StringVar(&getConfigFilterType, "filter-type", "subtree", "filter type - subtree or xpath")
+	getConfigCmd.Flags().
+		StringVar(&getConfigFilterPath, "path", "", "filter path")
+	getConfigCmd.Flags().
+		StringVar(&getConfigFilterValue, "value", "", "filter value")
+	getConfigCmd.Flags().
+		StringVar(&getConfigFilterFile, "filter-file", "", "filter file")
+	getConfigCmd.Flags().
+		StringVar(&getConfigSource, "source", "", "config source")
 	_ = getConfigCmd.MarkFlagRequired("source")
 	getConfigCmd.MarkFlagsOneRequired("path", "filter-file")
 	getConfigCmd.MarkFlagsMutuallyExclusive("path", "filter-file")
