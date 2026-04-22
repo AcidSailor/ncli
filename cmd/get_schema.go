@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/acidsailor/ncli/internal/utils"
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/scrapli/scrapligo/driver/opoptions"
@@ -78,8 +79,11 @@ var (
 )
 
 func init() {
-	getSchemaCmd.Flags().StringVar(&getSchemaIdentifier, "identifier", "", "schema identifier")
-	getSchemaCmd.Flags().StringVar(&getSchemaVersion, "version", "", "schema version")
-	getSchemaCmd.Flags().StringVar(&getSchemaFormat, "format", "yang", "schema format")
+	getSchemaCmd.Flags().
+		StringVar(&getSchemaIdentifier, "identifier", "", "schema identifier")
+	getSchemaCmd.Flags().
+		StringVar(&getSchemaVersion, "version", "", "schema version")
+	getSchemaCmd.Flags().
+		StringVar(&getSchemaFormat, "format", "yang", "schema format")
 	_ = getSchemaCmd.MarkFlagRequired("identifier")
 }

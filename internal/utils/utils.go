@@ -11,7 +11,7 @@ func NetconfStrip(s string) string {
 	return s
 }
 
-func FlatPathToSubtreeWithValue(s string, v string) string {
+func FlatPathToSubtreeWithValue(s, v string) string {
 	sa := strings.FieldsFunc(s, func(r rune) bool {
 		return r == '/'
 	})
@@ -29,6 +29,6 @@ func FlatPathToSubtreeWithValue(s string, v string) string {
 	return strings.Join(f, "")
 }
 
-func WrapWithTags(s string, tag string) string {
+func WrapWithTags(s, tag string) string {
 	return fmt.Sprintf("<%s>%s</%s>", tag, s, tag)
 }

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/spf13/cobra"
 )
@@ -56,8 +57,10 @@ var (
 )
 
 func init() {
-	copyConfigCmd.Flags().StringVar(&copyConfigSource, "source", "", "config source")
-	copyConfigCmd.Flags().StringVar(&copyConfigTarget, "target", "", "config target")
+	copyConfigCmd.Flags().
+		StringVar(&copyConfigSource, "source", "", "config source")
+	copyConfigCmd.Flags().
+		StringVar(&copyConfigTarget, "target", "", "config target")
 	_ = copyConfigCmd.MarkFlagRequired("source")
 	_ = copyConfigCmd.MarkFlagRequired("target")
 	copyConfigCmd.MarkFlagsRequiredTogether("source", "target")

@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/acidsailor/ncli/cmd"
 	"os"
+
+	"github.com/acidsailor/ncli/cmd"
 )
 
 var (

@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/acidsailor/ncli/internal/utils"
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/scrapli/scrapligo/driver/opoptions"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/scrapli/scrapligo/driver/opoptions"
 	"github.com/spf13/cobra"
@@ -40,7 +41,9 @@ var (
 			r, err := d.RPC(
 				opoptions.WithFilter(
 					fmt.Sprintf(
-						"<kill-session><session-id>%d</session-id></kill-session>", sessionId),
+						"<kill-session><session-id>%d</session-id></kill-session>",
+						sessionId,
+					),
 				),
 			)
 			if err != nil {

@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/acidsailor/ncli/internal/utils"
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/scrapli/scrapligo/driver/opoptions"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (
@@ -39,7 +40,10 @@ var (
 
 			switch getFilterType {
 			case "subtree":
-				f = utils.FlatPathToSubtreeWithValue(getFilterPath, getFilterValue)
+				f = utils.FlatPathToSubtreeWithValue(
+					getFilterPath,
+					getFilterValue,
+				)
 			case "xpath":
 				f = getFilterPath
 			}
@@ -78,7 +82,8 @@ var (
 )
 
 func init() {
-	getCmd.Flags().StringVar(&getFilterType, "filter-type", "subtree", "filter type - subtree or xpath")
+	getCmd.Flags().
+		StringVar(&getFilterType, "filter-type", "subtree", "filter type - subtree or xpath")
 	getCmd.Flags().StringVar(&getFilterPath, "path", "", "filter path")
 	getCmd.Flags().StringVar(&getFilterValue, "value", "", "filter value")
 	getCmd.Flags().StringVar(&getFilterFile, "filter-file", "", "filter file")

@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/acidsailor/ncli/internal/utils"
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (
@@ -41,7 +42,10 @@ var (
 
 			if editConfigTarget != "" {
 				cfg = utils.WrapWithTags(
-					utils.FlatPathToSubtreeWithValue(editConfigPath, editConfigValue),
+					utils.FlatPathToSubtreeWithValue(
+						editConfigPath,
+						editConfigValue,
+					),
 					"config",
 				)
 			}
@@ -113,9 +117,12 @@ var (
 
 func init() {
 	editConfigCmd.Flags().StringVar(&editConfigPath, "path", "", "config path")
-	editConfigCmd.Flags().StringVar(&editConfigValue, "value", "", "config value for specified path")
-	editConfigCmd.Flags().StringVar(&editConfigFile, "config-file", "", "config file")
-	editConfigCmd.Flags().StringVar(&editConfigTarget, "target", "", "config target")
+	editConfigCmd.Flags().
+		StringVar(&editConfigValue, "value", "", "config value for specified path")
+	editConfigCmd.Flags().
+		StringVar(&editConfigFile, "config-file", "", "config file")
+	editConfigCmd.Flags().
+		StringVar(&editConfigTarget, "target", "", "config target")
 	editConfigCmd.Flags().BoolVar(&editConfigValidate, "validate", false,
 		"execute validate operation after edit-config")
 	editConfigCmd.Flags().BoolVar(&editConfigCommit, "commit", false,

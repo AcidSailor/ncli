@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/scrapli/scrapligo/driver/netconf"
 	"github.com/spf13/cobra"
 )
@@ -52,6 +53,7 @@ var (
 )
 
 func init() {
-	deleteConfigCmd.Flags().StringVar(&deleteConfigTarget, "target", "", "config target")
+	deleteConfigCmd.Flags().
+		StringVar(&deleteConfigTarget, "target", "", "config target")
 	_ = deleteConfigCmd.MarkFlagRequired("target")
 }
