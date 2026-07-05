@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/acidsailor/ncli/internal/utils"
 	"github.com/scrapli/scrapligo/driver/netconf"
@@ -35,7 +36,7 @@ var (
 			}
 			defer func() { _ = d.Close() }()
 
-			var st string
+			var st strings.Builder
 
 			tagToValue := map[string]string{
 				"identifier": getSchemaIdentifier,
@@ -45,13 +46,13 @@ var (
 
 			for k, v := range tagToValue {
 				if v != "" {
-					st += utils.WrapWithTags(v, k)
+					st.WriteString(utils.WrapWithTags(v, k))
 				}
 			}
 
 			schemaPayload := fmt.Sprintf(
 				"<get-schema xmlns=\"urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring\">%s</get-schema>",
-				st,
+				st.String(),
 			)
 
 			if withLock != "" {
