@@ -100,9 +100,10 @@ running with neither is allowed and lets SSH auth fall through.
 - **`DriverCommonOptions()` reads package vars.** Call it only inside
   `RunE`, after cobra has parsed flags. Calling it at init time yields
   zero values.
-- **`--with-nc-version` is undocumented in `README.md`.** The pasted
-  `--help` output there is stale and omits it. Regenerate that block if
-  you touch global flags.
+- **`README.md` pastes real `--help` output.** It is kept byte-identical
+  to `go run . --help`. If you add or change a global flag, regenerate
+  that block rather than hand-editing it — cobra realigns every column
+  when the longest flag name changes.
 - **Host key checking is off.** `options.WithAuthNoStrictKey()` is
   hardcoded in `DriverCommonOptions`. Intentional for lab and containerlab
   targets; there is no flag to re-enable it.

@@ -28,14 +28,15 @@ Available Commands:
   validate        Validate changes in specified datastore
 
 Flags:
-  -h, --help                   help for ncli
-      --host string            hostname or address of the device
-      --lock string            wrap calls with lock/unlock - if applicable
-      --logging-level string   set logging level - info,debug,critical
-      --password string        password for authentication
-      --port int               port of the device (default 830)
-      --username string        username for authentication
-  -v, --version                version for ncli
+  -h, --help                     help for ncli
+      --host string              hostname or address of the device
+      --lock string              wrap calls with lock/unlock - if applicable
+      --logging-level string     set logging level - info,debug,critical
+      --password string          password for authentication
+      --port int                 port of the device (default 830)
+      --username string          username for authentication
+  -v, --version                  version for ncli
+      --with-nc-version string   netconf version (1.0 or 1.1) (default "1.0")
 
 Use "ncli [command] --help" for more information about a command.
 ```
