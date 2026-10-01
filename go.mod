@@ -3,7 +3,7 @@ module github.com/acidsailor/ncli
 go 1.26
 
 require (
-	github.com/scrapli/scrapligo v1.4.1
+	github.com/scrapli/scrapligo v1.4.2
 	github.com/spf13/cobra v1.10.2
 )
 
